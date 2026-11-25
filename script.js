@@ -1,65 +1,26 @@
 
-const menuToggle = document.getElementById("menuToggle");
-const nav = document.getElementById("nav");
-const languageBtn = document.getElementById("languageBtn");
-const topBtn = document.getElementById("topBtn");
+// Highlight the current navigation section
 
-let currentLanguage = "en";
+const sections = document.querySelectorAll("section[id]");
+const navLinks = document.querySelectorAll("nav a");
 
-// Mobile menu
-menuToggle.addEventListener("click", () => {
-  nav.classList.toggle("open");
-});
+window.addEventListener("scroll", function () {
 
-// Close menu after selecting a section
-document.querySelectorAll(".nav a").forEach(link => {
-  link.addEventListener("click", () => {
-    nav.classList.remove("open");
-  });
-});
+    let currentSection = "";
 
-// Switch between Arabic and English
-languageBtn.addEventListener("click", () => {
+    sections.forEach(function (section) {
+        const sectionTop = section.offsetTop - 120;
 
-  currentLanguage = currentLanguage === "en" ? "ar" : "en";
+        if (window.scrollY >= sectionTop) {
+            currentSection = section.getAttribute("id");
+        }
+    });
 
-  document.documentElement.lang = currentLanguage;
-
-  document.body.classList.toggle(
-    "arabic",
-    currentLanguage === "ar"
-  );
-
-  document.querySelectorAll("[data-en]").forEach(element => {
-    element.textContent = element.dataset[currentLanguage];
-  });
-
-  languageBtn.textContent =
-    currentLanguage === "en" ? "عربي" : "English";
-
-  document.title = currentLanguage === "en"
-    ? "Ali Mohammed Yahya | Cybersecurity Portfolio"
-    : "علي محمد يحيى | الموقع الشخصي";
-});
-
-// Back to top button
-window.addEventListener("scroll", () => {
-
-  topBtn.style.display =
-    window.scrollY > 400 ? "block" : "none";
+    navLinks.forEach(function (link) {
+        link.style.color =
+            link.getAttribute("href") === "#" + currentSection
+                ? "#2876a8"
+                : "#526170";
+    });
 
 });
-
-topBtn.addEventListener("click", () => {
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-
-});
-
-// Automatic current year
-document.getElementById("year").textContent =
-  new Date().getFullYear();
- 
